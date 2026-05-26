@@ -37,3 +37,22 @@
 
 ;; <primitiva-binaria> := | + | ~ | / | quot | * | % | concat | > | < | >= | <= | != | == |
 ;; <primitiva-unaria> := | add1 | sub1 | neg |
+
+;-------------------------------------------------------------------------------------------------------------;
+;; Especificación léxica
+
+;; Definición del escáner, el cual convierte el texto de entrada en tokens
+;; que serán procesados por el parser.
+(define scanner-spec-interpreter
+  '((white-sp
+     (whitespace) skip)
+    (comment
+     ("//" (arbno (not #\newline))) skip)
+    (identifier
+     ("@" letter (arbno letter digit)) symbol)
+    (texto
+     (letter (arbno (or letter digit "_"))) string)
+    (number
+     (digit (arbno digit)) number)
+    (number
+     (digit "." (arbno digit)) number)))
