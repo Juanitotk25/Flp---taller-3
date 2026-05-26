@@ -56,3 +56,57 @@
      (digit (arbno digit)) number)
     (number
      (digit "." (arbno digit)) number)))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Especificación Sintática (gramática)
+
+;; Definición de la gramática para el intérprete, que describe las reglas 
+;; sobre cómo las expresiones pueden ser construidas y reconocidas.
+
+(define grammar-interpreter
+  ;; Progamas (formato por una expresión)
+  '((program (expression) a-program)
+
+    ;; Expresiones
+    (expression (number) numero-lit)
+    (expression ("-" number) neg-numero-lit) ; Negativo como una expresión adicional
+    (expression ("\"" texto "\"") texto-lit)
+    (expression (identifier) var-exp)
+    (expression
+     ("(" expression prim-binaria expression ")") primapp-bin-exp)
+    (expression
+     (prim-unaria "(" expression ")") primapp-un-exp)
+    (expression
+     ("Si" expression "{" expression "}" "sino" "{" expression "}") condicional-exp)
+    (expression
+     ("declarar" "(" (arbno identifier "=" expression ";") ")" "{" expression "}") variableLocal-exp)
+    (expression
+     ("procedimiento" "(" (separated-list identifier ",") ")" "{" expression "}") procedimiento-exp)
+    (expression
+     ("evaluar" expression "(" (separated-list expression ",") ")" "finEval") app-exp)
+    (expression
+     ("declarar-rec" "(" (arbno identifier "(" (separated-list identifier ",") ")" "=" expression) ")"  "{" (arbno expression)"}") 
+                variableLocalRec-exp)
+
+    ;; Primitiva binarias
+    (prim-binaria ("+") prim-suma)
+    (prim-binaria ("~") prim-resta)
+    (prim-binaria ("/") prim-div)
+    (prim-binaria ("quot") prim-ent-div)
+    (prim-binaria ("*") prim-mult)
+    (prim-binaria ("%") prim-mod)
+    (prim-binaria ("concat") prim-concat)
+    (prim-binaria (">") prim-mayor)
+    (prim-binaria ("<") prim-menor)
+    (prim-binaria (">=") prim-mayor-igual)
+    (prim-binaria ("<=") prim-menor-igual)
+    (prim-binaria ("!=") prim-diferente)
+    (prim-binaria ("==") prim-igual)
+
+    ;; Primitivas unarias
+    (prim-unaria ("longitud") prim-long)
+    (prim-unaria ("add1") prim-add1)
+    (prim-unaria ("sub1") prim-sub1)
+    (prim-unaria ("neg") prim-neg-bool)))
+
+;; -------------------------------------------------------------------------------------------------------------
