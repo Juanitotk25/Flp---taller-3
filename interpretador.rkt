@@ -123,3 +123,31 @@
   (lambda () (sllgen:list-define-datatypes scanner-spec-interpreter grammar-interpreter)))
 
 ;-------------------------------------------------------------------------------------------------------------;
+;; Parser, Scanner, Interfaz
+
+;; El FrontEnd combina el análisis léxico y sintáctico para procesar un programa.
+;; Es decir, toma una cadena de texto que representa el programa, lo pasa por el 
+;; escáner (scanner) para obtener tokens, y luego por el parser para construir la 
+;; estructura sintáctica de acuerdo a la gramática.
+(define scan&parse
+  (sllgen:make-string-parser scanner-spec-interpreter grammar-interpreter))
+
+;; El Analizador Léxico (Scanner)
+;; Esta función se encarga únicamente de la parte de escanear el código, es decir, 
+;; convertir el código fuente en tokens, sin procesarlos.
+(define just-scan
+  (sllgen:make-string-scanner scanner-spec-interpreter grammar-interpreter))
+
+;; El Interpretador (FrontEnd + Evaluación + señal para lectura )
+
+;; El Interpretador combina el análisis léxico y sintáctico con la evaluación de expresiones.
+;; Esta función realiza un ciclo de lectura-evaluación (REP loop), que permite 
+;; ejecutar el código interactivo en línea, mostrando resultados a medida que se ejecutan las expresiones.
+(define interpretador
+  (sllgen:make-rep-loop "--> "
+    (lambda (pgm) (eval-program  pgm))
+    (sllgen:make-stream-parser 
+      scanner-spec-interpreter
+      grammar-interpreter)))
+
+;-------------------------------------------------------------------------------------------------------------;
