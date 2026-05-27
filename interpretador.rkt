@@ -110,3 +110,16 @@
     (prim-unaria ("neg") prim-neg-bool)))
 
 ;; -------------------------------------------------------------------------------------------------------------
+;; Tipos de datos para la sintaxis abstracta de la gramática
+
+;; Se definen los tipos de datos (datatypes) para representar las construcciones sintácticas
+;; de la gramática del intérprete, tales como literales numéricos, identificadores, 
+;; primitivas binarias, unarias, y más.
+
+(sllgen:make-define-datatypes scanner-spec-interpreter grammar-interpreter)
+
+;; Función para mostrar los tipos de datos generados por el intérprete.
+(define show-the-datatypes
+  (lambda () (sllgen:list-define-datatypes scanner-spec-interpreter grammar-interpreter)))
+
+;-------------------------------------------------------------------------------------------------------------;
