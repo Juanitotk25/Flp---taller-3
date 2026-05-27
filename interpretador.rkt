@@ -311,3 +311,18 @@
       (prim-diferente () (convert-num-bool-exp (not (equal? arg1 arg2))))
       (prim-igual () (convert-num-bool-exp (equal? arg1 arg2)))
       (else 'primarieta)))) ; Caso por defecto para una operación no reconocida
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Funciones para aplicar primitivas unarias
+
+;; apply-primitive-un: Aplica una operación unaria a un argumento
+;; prim: Operación unaria a aplicar
+;; arg: Argumento al que se aplica la operación unaria
+(define apply-primitive-un
+  (lambda (prim arg)
+    (cases prim-unaria prim
+      (prim-long () (string-length arg)) ; Función dada por racket
+      (prim-add1 () (+ arg 1))
+      (prim-sub1 () (- arg 1))
+      (prim-neg-bool () (not arg))
+      (else 'unarieta))))
