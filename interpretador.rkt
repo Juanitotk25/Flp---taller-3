@@ -285,3 +285,29 @@
         '()
         (cons (eval-expression (car expresiones) env)
               (eval-expression-block (cdr expresiones) env)))))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Funciones para aplicar primitivas binarias
+
+;; apply-primitive-bin: Aplica una operación binaria a dos argumentos
+;; arg1: Primer argumento
+;; prim: Operación binaria a aplicar
+;; arg2: Segundo argumento
+;; Se realiza la operación binaria dependiendo de la primitiva especificada.
+(define apply-primitive-bin
+  (lambda (arg1 prim arg2 )
+    (cases prim-binaria prim
+      (prim-suma () (+ arg1 arg2))
+      (prim-resta () (- arg1 arg2))
+      (prim-div () (/ arg1 arg2))
+      (prim-ent-div () (quotient arg1 arg2)) ; Función dada por racket
+      (prim-mult () (* arg1 arg2)) 
+      (prim-mod () (remainder arg1 arg2))
+      (prim-concat () (string-append arg1 arg2)) ; Función dada por racket
+      (prim-mayor () (convert-num-bool-exp (> arg1 arg2)))
+      (prim-menor () (convert-num-bool-exp (< arg1 arg2)))
+      (prim-mayor-igual () (convert-num-bool-exp (>= arg1 arg2)))
+      (prim-menor-igual () (convert-num-bool-exp (<= arg1 arg2)))
+      (prim-diferente () (convert-num-bool-exp (not (equal? arg1 arg2))))
+      (prim-igual () (convert-num-bool-exp (equal? arg1 arg2)))
+      (else 'primarieta)))) ; Caso por defecto para una operación no reconocida
