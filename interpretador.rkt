@@ -439,3 +439,76 @@
               (if (number? list-index-r)
                 (+ list-index-r 1)
                 #f))))))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Sección de Pruebas
+;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
+
+;; Constructor: scan&parse
+;; Qué hace: Convierte una cadena de texto en un programa sintáctico del intérprete.
+;; Para qué sirve: Verifica que la gramática reconozca correctamente las expresiones válidas.
+;; Ejemplos de prueba:
+;; 1. (scan&parse "42") => un-programa válido con numero-lit
+;; 2. (scan&parse "(1 + 2)") => un-programa válido con primapp-bin-exp
+;; 3. (scan&parse "Si 1 { 2 } sino { 3 }") => un-programa válido con condicional-exp
+;; 4. (scan&parse "declarar(@x = 1;) { @x }") => un-programa válido con variableLocal-exp
+
+;; Constructor: eval-program
+;; Qué hace: Evalúa un programa completo en el ambiente inicial.
+;; Para qué sirve: Permite obtener el resultado final de una expresión del lenguaje.
+;; Ejemplos de prueba:
+;; 1. (eval-program (scan&parse "42")) => 42
+;; 2. (eval-program (scan&parse "@a")) => 1
+;; 3. (eval-program (scan&parse "\"hola\"")) => "hola"
+
+;; Constructor: apply-primitive-bin
+;; Qué hace: Aplica una primitiva binaria a dos valores evaluados.
+;; Para qué sirve: Ejecuta operaciones como suma, resta, comparación y concatenación.
+;; Ejemplos de prueba:
+;; 1. (apply-primitive-bin 1 (prim-suma) 2) => 3
+;; 2. (apply-primitive-bin 7 (prim-resta) 4) => 3
+;; 3. (apply-primitive-bin "a" (prim-concat) "b") => "ab"
+;; 4. (apply-primitive-bin 3 (prim-mayor) 2) => 1
+
+;; Constructor: apply-primitive-un
+;; Qué hace: Aplica una primitiva unaria a un valor.
+;; Para qué sirve: Ejecuta operaciones como add1, sub1, neg y longitud.
+;; Ejemplos de prueba:
+;; 1. (apply-primitive-un (prim-add1) 3) => 4
+;; 2. (apply-primitive-un (prim-sub1) 3) => 2
+;; 3. (apply-primitive-un (prim-long) "hola") => 4
+
+;; Constructor: valor-verdad?
+;; Qué hace: Determina si un número representa verdadero o falso.
+;; Para qué sirve: Se usa en condicionales para decidir qué rama evaluar.
+;; Ejemplos de prueba:
+;; 1. (valor-verdad? 1) => #t
+;; 2. (valor-verdad? 0) => #f
+;; 3. (valor-verdad? 5) => #t
+
+;; Constructor: convert-num-bool-exp
+;; Qué hace: Convierte un booleano a 1 o 0.
+;; Para qué sirve: Representa comparaciones booleanas dentro del intérprete.
+;; Ejemplos de prueba:
+;; 1. (convert-num-bool-exp #t) => 1
+;; 2. (convert-num-bool-exp #f) => 0
+
+;; Constructor: init-env
+;; Qué hace: Crea el ambiente inicial del intérprete.
+;; Para qué sirve: Provee valores predefinidos para @a, @b, @c, @d y @e.
+;; Ejemplos de prueba:
+;; 1. (apply-env (init-env) '@a) => 1
+;; 2. (apply-env (init-env) '@d) => "hola"
+
+;; Constructor: extend-env
+;; Qué hace: Extiende un ambiente con variables nuevas y sus valores.
+;; Para qué sirve: Permite implementar variables locales y parámetros de procedimientos.
+;; Ejemplos de prueba:
+;; 1. (apply-env (extend-env '(@x) '(5) (init-env)) '@x) => 5
+;; 2. (apply-env (extend-env '(@x @y) '(2 3) (init-env)) '@y) => 3
+
+;; Constructor: extend-env-recursively
+;; Qué hace: Crea un ambiente recursivo para procedimientos.
+;; Para qué sirve: Permite definir funciones que se llaman a sí mismas.
+;; Ejemplos de prueba:
+;; 1. (apply-env (extend-env-recursively '(@f) '((@x)) '((@x)) (init-env)) '@f) => una cerradura
