@@ -234,3 +234,27 @@
                          (extend-env-recursively proc-nombres ids cuerpos env)))
       (else 'expresión_no_reconocida))
     ))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Procedimientos
+;; Definición del tipo de dato para procedimientos
+;; procval: Define la estructura de los procedimientos (cerraduras)
+;; Una cerradura es una función junto con el ambiente en el que fue definida.
+;; Consta de una lista de identifiadores, el cuerpo de la expresión y el ambiente en el
+;; que se definió
+(define-datatype procval procval?
+  (cerradura 
+   (lista-ID (list-of symbol?))
+   (exp expression?)
+   (env environment?)))
+
+;; aplicar-procedimiento: Aplica un procedimiento (cerradura) a una lista de argumentos.
+;; proc: Procedimiento a aplicar (cerradura)
+;; exps: Lista de argumentos que se pasan al procedimiento.
+;; Evalúa el cuerpo del procedimiento en un ambiente extendido con los parámetros formales 
+;; y sus valores correspondientes.
+(define aplicar-procedimiento
+  (lambda (proc exps)
+    (cases procval proc
+      (cerradura (lista-ID exp env)
+                 (eval-expression exp (extend-env lista-ID exps env))))))
