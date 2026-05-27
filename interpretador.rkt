@@ -326,3 +326,20 @@
       (prim-sub1 () (- arg 1))
       (prim-neg-bool () (not arg))
       (else 'unarieta))))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Función auxiliar valor-verdad?
+
+;; valor-verdad?: Determina si un valor dado corresponde a un valor booleano verdadero o falso.
+;; Un valor es verdadero si no es cero, siguiendo la convención de ciertos lenguajes
+(define valor-verdad?
+  (lambda (x)
+    (not (zero? x))))
+
+;; convert-num-bool-exp: Convierte un valor booleano a 1 (verdadero) o 0 (falso).
+;; Esta conversión es necesaria para representar las expresiones booleanas dentro del interpretador.
+(define convert-num-bool-exp
+  (lambda (x)
+    (if (not x)
+        0
+        1)))
