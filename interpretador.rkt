@@ -391,3 +391,27 @@
   (lambda (proc-names idss bodies old-env)
     (recursively-extended-env-record
      proc-names idss bodies old-env)))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Función apply-env: Buscar un símbolo en un ambiente
+
+;; apply-env: Busca el valor asociado a un símbolo en el ambiente.
+;; env: El ambiente en el que se busca el símbolo.
+;; sym: El símbolo (variable) a buscar.
+(define apply-env
+  (lambda (env sym)
+    (cases environment env
+      (empty-env-record ()
+                        (eopl:error 'apply-env "Error, la variable no existe" sym))
+      (extended-env-record (syms vals env)
+                           (let ((pos (list-find-position sym syms)))
+                             (if (number? pos)
+                                 (list-ref vals pos)
+                                 (apply-env env sym))))
+      (recursively-extended-env-record (proc-names idss bodies old-env)
+                                       (let ((pos (list-find-position sym proc-names)))
+                                         (if (number? pos)
+                                             (cerradura (list-ref idss pos)
+                                                      (list-ref bodies pos)
+                                                      env)
+                                             (apply-env old-env sym)))))))
