@@ -343,3 +343,21 @@
     (if (not x)
         0
         1)))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Definición del tipo de dato ambiente
+
+;; environment: Tipo de dato que representa un ambiente.
+;; Contiene tres variantes:
+;; - empty-env-record: Un ambiente vacío.
+;; - extended-env-record: Un ambiente extendido que contiene una lista de símbolos y valores.
+;; - recursively-extended-env-record: Un ambiente recursivamente extendido, utilizado para procedimientos recursivos.
+(define-datatype environment environment?
+  (empty-env-record)
+  (extended-env-record (syms (list-of symbol?))
+                       (vals (list-of scheme-value?))
+                       (env environment?))
+  (recursively-extended-env-record (proc-names (list-of symbol?))
+                                   (idss (list-of (list-of symbol?)))
+                                   (bodies (list-of expression?))
+                                   (env environment?)))
