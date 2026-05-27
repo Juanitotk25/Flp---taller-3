@@ -415,3 +415,27 @@
                                                       (list-ref bodies pos)
                                                       env)
                                              (apply-env old-env sym)))))))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Funciones Auxiliares
+
+;; list-find-position: Busca la posición de un símbolo en una lista de símbolos.
+;; sym: El símbolo a buscar.
+;; los: La lista de símbolos.
+;; Devuelve la posición del símbolo en la lista, o #f si no se encuentra.
+(define list-find-position
+  (lambda (sym los)
+    (list-index (lambda (sym1) (eqv? sym1 sym)) los)))
+
+;; list-index: Encuentra el índice del primer elemento en una lista que satisface un predicado.
+;; pred: Predicado que se aplica a los elementos de la lista.
+;; ls: La lista en la que se busca.
+(define list-index
+  (lambda (pred ls)
+    (cond
+      ((null? ls) #f)
+      ((pred (car ls)) 0)
+      (else (let ((list-index-r (list-index pred (cdr ls))))
+              (if (number? list-index-r)
+                (+ list-index-r 1)
+                #f))))))
