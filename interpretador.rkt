@@ -364,3 +364,30 @@
 
 ;; scheme-value?: Función que valida los valores de los símbolos, siempre retorna #t ya que no se restringen tipos.
 (define scheme-value? (lambda (v) #t))
+
+;; -------------------------------------------------------------------------------------------------------------
+;; Funciones para crear y manejar ambientes
+
+;; empty-env: Crea un ambiente vacío.
+(define empty-env  
+  (lambda ()
+    (empty-env-record)))       ;llamado al constructor de ambiente vacío 
+
+
+;; extend-env: Extiende un ambiente con una lista de símbolos y una lista de valores asociados.
+;; syms: Lista de símbolos (variables).
+;; vals: Lista de valores asociados a los símbolos.
+;; env: Ambiente actual.
+(define extend-env
+  (lambda (syms vals env)
+    (extended-env-record syms vals env)))
+
+;; extend-env-recursively: Extiende un ambiente de manera recursiva para procedimientos.
+;; proc-names: Nombres de los procedimientos.
+;; idss: Lista de listas de identificadores de los procedimientos.
+;; bodies: Cuerpos de los procedimientos.
+;; old-env: El ambiente existente que se va a extender.
+(define extend-env-recursively
+  (lambda (proc-names idss bodies old-env)
+    (recursively-extended-env-record
+     proc-names idss bodies old-env)))
