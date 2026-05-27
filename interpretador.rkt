@@ -258,3 +258,30 @@
     (cases procval proc
       (cerradura (lista-ID exp env)
                  (eval-expression exp (extend-env lista-ID exps env))))))
+
+;-------------------------------------------------------------------------------------------------------------;
+;; Funciones auxiliares para aplicar eval-expression a cada elemento de una lista de operandos (expresiones)
+
+;; eval-rands: Evalúa cada expresión en una lista de operandos dentro del ambiente dado
+;; rands: Lista de expresiones (operandos)
+;; env: Ambiente en el cual se evaluarán las expresiones
+(define eval-rands
+  (lambda (rands env)
+    (map (lambda (x) (eval-rand x env)) rands)))
+
+;; eval-rand: Evalúa una única expresión en el ambiente dado
+;; rand: Expresión a evaluar
+;; env: Ambiente en el cual se evaluará la expresión
+(define eval-rand
+  (lambda (rand env)
+    (eval-expression rand env)))    
+
+;; eval-expression-block: Evalúa una secuencia de expresiones en bloque
+;; Si la lista de expresiones está vacía, devuelve '().
+;; Si no, evalúa la cabeza de la lista y continúa evaluando el resto de la lista de forma recursiva.
+(define eval-expression-block
+  (lambda (expresiones env)
+    (if (null? expresiones)
+        '()
+        (cons (eval-expression (car expresiones) env)
+              (eval-expression-block (cdr expresiones) env)))))
