@@ -151,3 +151,86 @@
       grammar-interpreter)))
 
 ;-------------------------------------------------------------------------------------------------------------;
+;;El Interprete
+
+;; Esta función se encarga de evaluar un programa completo. Toma como entrada 
+;; un programa (pgm) y lo evalúa dentro de un ambiente inicial, que es definido más abajo.
+
+(define eval-program
+  (lambda (pgm)
+    (cases program pgm
+      (a-program (body)
+                 (eval-expression body (init-env))))))
+
+;; Ambiente inicial
+;; init-env: Se define un ambiente inicial que asigna valores predeterminados a las variables
+;; @a, @b, @c, @d, y @e. Estos valores pueden ser números o cadenas, y representan el entorno
+;; en el cual las expresiones serán evaluadas al inicio de la ejecución del programa.
+(define init-env
+  (lambda ()
+    (extend-env
+     '(@a @b @c @d @e)
+     '(1 2 3 "hola" "FLP")
+     (empty-env))))
+
+;; eval-expression:
+;; evalua la expresión en el ambiente de entrada.
+;; Dependiendo del tipo de expresión (literal numérico, texto, variable, etc.), 
+;; se aplican diferentes casos para evaluarla correctamente.
+(define eval-expression
+  (lambda (exp env)
+    (cases expression exp
+      ; Caso para literales numéricos
+      (numero-lit (datum) datum)
+
+      ; Caso para lgierales numéricos negativos
+      (neg-numero-lit (datum) datum)
+
+      ; Caso para literales de texto
+      (texto-lit (textum) textum)
+
+      ; Caso para variables  (identificadores)
+      (var-exp (id) (apply-env env id))
+
+      ; Caso para aplicaciones de primitivas binarias
+      (primapp-bin-exp (rand1 prim rand2)
+                       (let ((arg1 (eval-expression rand1 env))
+                         (arg2 (eval-expression rand2 env)))
+                         (apply-primitive-bin arg1 prim arg2)))
+
+      ; Caso para aplicaciones de primitivas unarias
+      (primapp-un-exp (prim rand)
+                      (let ((arg (eval-expression rand env)))
+                        (apply-primitive-un prim arg)))
+
+      ; Caso para expresiones condicionales (Si - sino)
+      (condicional-exp (text-exp true-exp false-exp)
+                       (if (valor-verdad? (eval-expression text-exp env))
+                           (eval-expression true-exp env)
+                           (eval-expression false-exp env)))
+
+       ; Caso para expresiones locales (declarar)
+      (variableLocal-exp (ids exps cuerpo)
+                         (let ((args (eval-rands exps env)))
+                           (eval-expression cuerpo
+                                            (extend-env ids args env))))
+
+      ; Caso para expresiones de procedimiento (procedimiento)
+      (procedimiento-exp (ids cuerpo)
+                         (cerradura ids cuerpo env))
+
+      ; Caso para aplicaciones de procedimientos (evaluar)
+      (app-exp (exp exps)
+               (let ((proc (eval-expression exp env))
+                     (args (eval-rands exps env)))
+                 (if (procval? proc)
+                     (aplicar-procedimiento proc args)
+                     (eopl:error 'eval-expresssion
+                                 "Se esta aplicando algo que no es un procedimiento ~s" proc))))                                
+
+      ; Caso para declaraciones recursivas (declarar-rec)
+      (variableLocalRec-exp (proc-nombres ids cuerpos decl-cuerpo)
+        (eval-expression-block decl-cuerpo
+                         (extend-env-recursively proc-nombres ids cuerpos env)))
+      (else 'expresión_no_reconocida))
+    ))
