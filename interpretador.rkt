@@ -361,3 +361,6 @@
                                    (idss (list-of (list-of symbol?)))
                                    (bodies (list-of expression?))
                                    (env environment?)))
+
+;; scheme-value?: Función que valida los valores de los símbolos, siempre retorna #t ya que no se restringen tipos.
+(define scheme-value? (lambda (v) #t))
