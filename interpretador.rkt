@@ -594,6 +594,30 @@ declarar-rec (
 {evaluar @potencia(2, 4) finEval}
 
 
+; -------------------------------------------------------------------------------------------------------------
+; Función @sumarRango (Suma de un rango de números)
+; -------------------------------------------------------------------------------------------------------------
+; @sumarRango: Suma los números en el rango de inicio a fin, inclusive.
+; inicio: El número inicial del rango.
+; fin: El número final del rango.
+; Devuelve la suma de todos los números desde inicio hasta fin.
+;
+; La función evalúa si el número de inicio es igual al número final. Si es así, retorna el valor del fin.
+; De lo contrario, suma el número de inicio al resultado de una llamada recursiva con add1 (incrementa el inicio).
+;
+; Ejemplo de uso:
+;    evaluar @sumarRango(2, 5) finEval   ; Resultado: 14 (2 + 3 + 4 + 5)
+
+
+ declarar-rec (
+   @sumarRango(@inicio, @fin) = 
+        Si (@inicio == @fin) {@fin}
+         sino {(@inicio + evaluar @sumarRango(add1(@inicio), @fin) finEval)}
+         )
+ {evaluar @sumarRango(2,5) finEval}
+
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
