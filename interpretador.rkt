@@ -440,6 +440,31 @@
                 (+ list-index-r 1)
                 #f))))))
 
+#|
+; -------------------------------------------------------------------------------------------------------------
+; Función @divisio nEntera
+; -------------------------------------------------------------------------------------------------------------
+; @divisionEntera: Realiza una división entera (sin decimales) entre dos números.
+; x: El numerador de la división.
+; y: El denominador de la división.
+; Devuelve el cociente entero de la división entre x e y. Si x es menor que y, retorna 0.
+; Se utiliza la operación de resta recursiva para realizar la división entera.
+;
+; Ejemplo de uso:
+;    evaluar @divisionEntera(141, 10) finEval
+; Resultado: 14
+ 
+  declarar-rec (
+        @divisionEntera(@x, @y) =
+        Si (@x < @y) {0}
+        sino {(1 + evaluar @divisionEntera((@x ~ @y), @y) finEval)}
+        ) {
+       evaluar @divisionEntera(141, 10) finEval
+  }
+; -------------------------------------------------------------------------------------------------------------
+
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
@@ -512,3 +537,5 @@
 ;; Para qué sirve: Permite definir funciones que se llaman a sí mismas.
 ;; Ejemplos de prueba:
 ;; 1. (apply-env (extend-env-recursively '(@f) '((@x)) '((@x)) (init-env)) '@f) => una cerradura
+
+|#
