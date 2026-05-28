@@ -547,6 +547,31 @@
   }
 
 
+; -------------------------------------------------------------------------------------------------------------
+; Función @fact (Cálculo factorial recursivo)
+; -------------------------------------------------------------------------------------------------------------
+; @fact: Calcula el factorial de un número dado.
+; x: El número cuyo factorial se va a calcular.
+; Devuelve el factorial de x.
+;
+; La función evalúa si el número es mayor que cero, en cuyo caso se multiplica recursivamente por el factorial del
+; número anterior hasta llegar a 1.
+;
+; Ejemplo de uso:
+;    evaluar @fact(5) finEval     ; Resultado: 120
+;    evaluar @fact(10) finEval    ; Resultado: 3,628,800
+; En factorial se expandio la función recursiva para permitir la evaluación de varias expresiones esto funciona
+; para hacer varias evaluaciones a una función definida.
+
+ declarar-rec (
+               @fact(@x) = 
+                    Si @x {(@x * evaluar @fact(sub1(@x)) finEval)}
+                    sino {1}
+                    )
+ {evaluar @fact(5) finEval
+         evaluar @fact(10) finEval}
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
