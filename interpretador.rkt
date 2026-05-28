@@ -495,7 +495,30 @@
 ; 
 ; Función @sumarDigitos (Versión usando "quot", expandido al lenguaje)
 ; -------------------------------------------------------------------------------------------------------------
+; @sumarDigitos: Calcula la suma de los dígitos de un número utilizando la función quotient de Racket.
+; n: El número cuyo dígitos serán sumados.
+; Devuelve la suma de los dígitos de n.
+;
+; Esta versión utiliza la operación "quot" para realizar la división entera en lugar de la función recursiva.
+; Esta se implemento como apartado adicional en el lenguaje
+; 
+;
+; Ejemplo de uso:
+;    evaluar @sumarDigitos(147) finEval
+; Resultado: 12 (1 + 4 + 7)
 
+
+  declarar-rec (
+  
+        @sumarDigitos(@n)=
+           Si (@n < 10) {
+               @n
+           } sino {
+               ((@n ~ ((@n quot 10) * 10)) + evaluar @sumarDigitos((@n quot 10)) finEval)
+           }
+  ) {
+     evaluar @sumarDigitos(147) finEval
+  }
 
 
 ;; -------------------------------------------------------------------------------------------------------------
