@@ -572,6 +572,28 @@
          evaluar @fact(10) finEval}
 
 
+; -------------------------------------------------------------------------------------------------------------
+; Función @potencia (Cálculo de una base elevada a un exponente)
+; -------------------------------------------------------------------------------------------------------------
+; @potencia: Calcula la potencia de un número base elevado a un exponente dado.
+; base: El número que se va a elevar.
+; exponente: El número al que se eleva la base.
+; Devuelve el resultado de base^exponente.
+;
+; La función evalúa si el exponente es igual a 1, en cuyo caso devuelve la base.
+; De lo contrario, multiplica la base por la llamada recursiva con el exponente reducido en 1.
+;
+; Ejemplo de uso:
+;    evaluar @potencia(2, 4) finEval    ; Resultado: 16 (2^4)
+
+declarar-rec (
+  @potencia(@base, @exponente) = 
+	Si (@exponente == 1) {@base}
+	sino {(@base * evaluar @potencia(@base, sub1(@exponente)) finEval)}
+	)
+{evaluar @potencia(2, 4) finEval}
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
