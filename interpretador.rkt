@@ -618,6 +618,29 @@ declarar-rec (
 
 
 
+
+; -------------------------------------------------------------------------------------------------------------
+; Decorador Básico (Añadir un saludo a la salida de un procedimiento)
+; -------------------------------------------------------------------------------------------------------------
+; @integrantes: Procedimiento que devuelve el nombre de los integrantes ("JuanD_y_JuanM").
+; @saludar: Procedimiento que toma como entrada otro procedimiento y retorna un saludo concatenado con el resultado
+; de dicho procedimiento.
+;
+; La función evalúa el saludo concatenando "Hola_" con el resultado del procedimiento pasado como argumento.
+;
+; Ejemplo de uso:
+;    evaluar @decorate() finEval    ; Resultado: "Hola_JuanD_y_JuanM"
+
+
+ declarar (
+   @integrantes = procedimiento() {"JuanD_y_JuanM"};
+   @saludar = procedimiento(@aProc) {procedimiento() {("Hola_" concat evaluar @aProc() finEval)}};
+ )  {
+ declarar (
+ @decorate = evaluar @saludar(@integrantes) finEval;) // añadio un declarar adicional para almacenar la variable
+ {evaluar @decorate() finEval}}
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
