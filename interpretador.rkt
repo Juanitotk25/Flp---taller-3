@@ -641,6 +641,42 @@ declarar-rec (
  {evaluar @decorate() finEval}}
 
 
+; -------------------------------------------------------------------------------------------------------------
+; Decorador Expandido (Añadir un saludo personalizado a la salida de un procedimiento con texto adicional)
+; -------------------------------------------------------------------------------------------------------------
+; @integrantes: Procedimiento que devuelve el nombre de los integrantes ("JuanD_y_JuanM").
+; @saludar: Procedimiento que toma como entrada otro procedimiento y retorna un saludo concatenado con el resultado
+; de dicho procedimiento.
+; @decorate: Procedimiento que evalúa el decorador y añade texto adicional al saludo.
+;
+; La función evalúa el saludo concatenando "Hola_" con el resultado del procedimiento pasado como argumento y le añade
+; texto adicional (en este caso, "EstudiantesFLP").
+;
+; Ejemplo de uso:
+;    evaluar @decorate("EstudiantesFLP") finEval    ; Resultado: "Hola_JuanD_y_JuanMEstudiantesFLP"
+
+
+ declarar (
+   @integrantes = procedimiento() {"JuanD_y_JuanM"};
+   @saludar = procedimiento(@aProc) {procedimiento() {("Hola_" concat evaluar @aProc() finEval)}};
+ ) {
+ declarar (
+ @decorate = procedimiento(@Exp) {( evaluar evaluar @saludar(@integrantes) finEval() finEval concat @Exp)};)
+ {evaluar @decorate("EstudiantesFLP") finEval}}
+
+
+
+ ; Función para probar el lenguaje en su primera versión
+ declarar-rec (
+    @fact(@x) = 
+      Si @x {(@x * evaluar @fact(sub1(@x)) finEval)}
+       sino {1}
+  )
+ {evaluar @fact(6) finEval}
+
+
+
+
 ;; -------------------------------------------------------------------------------------------------------------
 ;; Sección de Pruebas
 ;; Las pruebas cubren el análisis sintáctico, la evaluación de expresiones, las primitivas, los condicionales y el manejo de ambientes.
@@ -715,3 +751,6 @@ declarar-rec (
 ;; 1. (apply-env (extend-env-recursively '(@f) '((@x)) '((@x)) (init-env)) '@f) => una cerradura
 
 |#
+
+;; Ejecuta el interpretador al correr la aplicación
+(interpretador)
