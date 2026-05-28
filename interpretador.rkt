@@ -462,6 +462,39 @@
        evaluar @divisionEntera(141, 10) finEval
   }
 ; -------------------------------------------------------------------------------------------------------------
+; Función @sumarDigitos (Primera versión, sin añadidos adicionales en el lenguaje)
+; -------------------------------------------------------------------------------------------------------------
+; @sumarDigitos: Calcula la suma de los dígitos de un número dado.
+; n: El número cuyo dígitos serán sumados.
+; Devuelve la suma de los dígitos de n.
+;
+; Esta versión usa la función @divisionEntera creada anteriormente para descomponer el número y sumar sus dígitos.
+;
+; Ejemplo de uso:
+;    evaluar @sumarDigitos(147) finEval
+; Resultado: 12 (1 + 4 + 7)
+
+
+  declarar-rec (
+       @divisionEntera(@x, @y) =
+       Si (@x < @y) {0}
+        sino {(1 + evaluar @divisionEntera((@x ~ @y), @y) finEval)}
+        
+       @sumarDigitos(@n)=
+           Si (@n < 10) {
+              @n
+           } sino {
+              ((@n ~ (evaluar @divisionEntera(@n, 10) finEval * 10)) + evaluar @sumarDigitos(evaluar @divisionEntera(@n, 10) finEval) finEval)
+           }
+  ) {
+     evaluar @sumarDigitos(147) finEval
+  }
+  
+  
+; Se plantearon distintas versiones de la función optimizadas con añadidos al lenguaje:
+; 
+; Función @sumarDigitos (Versión usando "quot", expandido al lenguaje)
+; -------------------------------------------------------------------------------------------------------------
 
 
 
